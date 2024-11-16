@@ -1,6 +1,5 @@
-from Tutorial_4.userdao.UserDAO import UserDAO
-from Tutorial_4.validation.UserValidation import UserValidation
-from Tutorial_4.model.User import User
+from DAO.UserDao import UserDAO
+from Model.User import User
 # Creating a service layer for the model class this will handle business logic related to model
 # this is an example of MVC (Model View Controller) Good programming practice for website development
 class UserService:
@@ -38,18 +37,11 @@ class UserService:
             print("Invalid username or password. Try again.")
             self.login()
 
-    def signUp(self):
-        firstName = input("Enter First Name: ")
-        lastName = input("Enter Last Name: ")
-        email = input("Enter Email: ")
-        password = input("Enter Password: ")
+    def create_user(self, firstname, lastname, email, password):
 
         if self.userValidation.checkEmail(self.userDAO.getAllUsers(), email) and self.userValidation.checkPassword(password):
-            userToCreate = User(firstName, lastName, email, password)
-            self.userDAO.createUser(userToCreate)
-            print(f"Hello {firstName} {lastName}, your account has been created successfully!")
-            for user in self.userDAO.getAllUsers():
-                print(user)
+            user=User(firstname, lastname, email, password)
+            self.userDAO.addusertolist(user)
+            return user
         else:
             print("Sign up failed. Please try again.")
-            self.signUp()  # Recursive call if validation fails

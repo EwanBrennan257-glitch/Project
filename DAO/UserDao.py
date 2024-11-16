@@ -1,4 +1,4 @@
-from Tutorial_4.model.User import User
+from Model.User import User
 
 # class to hold all users in memory, using this instead of database
 class UserDAO:
@@ -20,5 +20,10 @@ class UserDAO:
         return self.user_list
 
     # Add a new model to the list
-    def createUser(self, user):
+    def addusertolist(self, user):
         self.user_list.append(user)
+
+    def getManager(self):
+        for user in self.user_list:
+            if user.is_admin: return user
+

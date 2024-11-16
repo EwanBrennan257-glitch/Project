@@ -1,9 +1,15 @@
 import re
-from Tutorial_4.userdao.UserDAO import UserDAO
 
-class UserValidation:
-    def __init__(self):
-        pass
+
+class User:
+    def __init__(self, firstname:str, lastname:str, email:str, password:str, is_admin:bool=False):
+        self.firstname = firstname
+        self.lastname = lastname
+        self.email = email
+        self.password = password
+        self.is_admin = is_admin
+
+
 
     def checkEmail(userList, email):
         if "@" not in email or "." not in email:

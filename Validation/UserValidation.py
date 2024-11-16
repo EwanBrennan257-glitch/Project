@@ -1,23 +1,22 @@
 import re
-from Tutorial_4.userdao.UserDAO import UserDAO
 
 class UserValidation:
     def __init__(self):
         pass
 
-    def checkEmail(userList, email):
+    def checkEmail(self, userList, email):
         if "@" not in email or "." not in email:
             print("Email doesn't have the key characters '@' and '.'")
             return False
 
         for user in userList:
-            if user.userEmail == email:
+            if user.email == email:
                 print("Email already has an account")
                 return False
 
         return True
 
-    def checkPassword(password):
+    def checkPassword(self, password):
         pattern = re.compile(r'[^a-zA-Z0-9]')
         if len(password) < 10:
             print("Password must be at least 10 characters long")
