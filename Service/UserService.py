@@ -10,32 +10,15 @@ class UserService:
         self.userValidation = userValidation
 
     # Creating the login function
-    def login(self):
+    def signin(self, email, password):
 
         # Retrieve the list of all users from UserDAO
         userListToCheckAgainst = self.userDAO.getAllUsers()
 
-        # Prompt the model for email and password input
-        email = input("Enter your Email: ")
-        password = input("Enter your password: ")
-
-        # Flag to check if the model is found
-        user_found = False
-
         # Iterate through the list of users to find a matching model
         for user in userListToCheckAgainst:
-            if user.userEmail == email and user.userPassword == password:
-                user_found = True
-                if user.isManager:
-                    print("Hello Manager, Welcome Back")
-                else:
-                    print("Hello Employee, Welcome Back")
-                break  # Exit the loop once a model is found
-
-        # If no matching model is found, display an error message
-        if not user_found:
-            print("Invalid username or password. Try again.")
-            self.login()
+            if user.email == email and user.password == password:
+                return user
 
     def create_user(self, firstname, lastname, email, password):
 
