@@ -1,0 +1,16 @@
+<!--This template is used for displaying server side (backend) messages, alerts etc.-->
+ <style>
+    .alert-message{
+        background-color: antiquewhite;
+    }
+ </style>
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{category}} py-4 alert-dismissible fade show">
+    <strong class="flash">{{ message }}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
