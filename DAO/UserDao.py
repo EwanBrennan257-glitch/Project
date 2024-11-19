@@ -1,11 +1,16 @@
 from Model.User import User
+#to hold all users in global list
+GLOBAL_USER_LIST=list()
+
 
 # class to hold all users in memory, using this instead of database
 class UserDAO:
 
     def __init__(self, user_list=None):
         # Initialize user_list as an empty list if None is provided
-        self.user_list = user_list if user_list is not None else []
+        self.user_list = GLOBAL_USER_LIST
+        if user_list:
+            self.user_list.extend(user_list)
 
     # This method grabs all users, and creates some if the list is empty
     def getAllUsers(self):

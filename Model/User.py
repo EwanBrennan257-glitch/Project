@@ -23,12 +23,5 @@ class User:
 
         return True
 
-    def checkPassword(password):
-        pattern = re.compile(r'[^a-zA-Z0-9]')
-        if len(password) < 10:
-            print("Password must be at least 10 characters long")
-            return False
-        if not pattern.search(password):
-            print("Password must contain at least one special character")
-            return False
-        return True
+    def __repr__(self):
+        return f"User(email='{self.email})"

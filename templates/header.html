@@ -6,8 +6,14 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url_for('landing_page') }}">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('about_page') }}">About</a></li>
+                        {% if g.user %}
+                        <li class="nav-item"><a class="nav-link" href="#">{{ g.user.email }}</a></li>
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('signout_page') }}">SignOut</a></li>
+                        {% else %}
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('signup_page') }}">SignUp</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('signin_page') }}">SignIn</a></li>
+                        {% endif %}
+
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Shop</a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">

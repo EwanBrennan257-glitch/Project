@@ -1,5 +1,9 @@
 import re
+class PasswordLengthError(Exception):
+    pass
 
+class PasswordCharacterError(Exception):
+    pass
 class UserValidation:
     def __init__(self):
         pass
@@ -19,9 +23,7 @@ class UserValidation:
     def checkPassword(self, password):
         pattern = re.compile(r'[^a-zA-Z0-9]')
         if len(password) < 10:
-            print("Password must be at least 10 characters long")
-            return False
+            raise PasswordLengthError("Password must be at least 10 characters long")
         if not pattern.search(password):
-            print("Password must contain at least one special character")
-            return False
+            raise PasswordCharacterError("Password must contain at least one special character")
         return True
