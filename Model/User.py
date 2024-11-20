@@ -1,4 +1,4 @@
-import re
+
 
 
 class User:
@@ -25,3 +25,10 @@ class User:
 
     def __repr__(self):
         return f"User(email='{self.email})"
+
+    @staticmethod
+    def getadmin():
+        from DAO.UserDao import UserDAO
+        for user in UserDAO().getAllUsers():
+            if user.is_admin:
+                return user

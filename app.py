@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session,g
+
+from Service.ProductService import ProductService
 from Service.UserService import UserService
 from Validation.UserValidation import UserValidation
 
@@ -31,7 +33,8 @@ def landing_page():
 
 @app.route('/products')
 def products_spread():
-    return render_template('ProductSpread.html')
+    products=ProductService().get_products()
+    return render_template('ProductSpread.html',products=products)
 
 @app.route('/about')
 def about_page():
