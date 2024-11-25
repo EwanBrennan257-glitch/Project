@@ -26,6 +26,11 @@ def before_request():
         user=UserService(validation).get_user_by_email(email)
         if user:
             g.user=user
+            #we want to allow logged in users to have the cart object
+            if 'cart' not in session:
+                session['cart'] = {"user": user.email, "items": [], "quantity": 0}
+            else:
+                g.cart = session['cart']
         else:
             session.clear()
 #Landing Page Route
@@ -112,6 +117,19 @@ def create_product():
         return render_template('ProductCreate.html')  # Load form template for GET requests
     flash("You are unauthorised","danger")
     return redirect(url_for('signin_page'))
+
+@app.route('/Cart', methods=['POST'])
+def add_to_cart():
+    if g.user:
+        productname=request.form['productname']
+        service=ProductService()
+        cart=service.add_product_to_cart(g.user, productname, session['cart'])
+        session['cart'] = cart  # Save updated cart back to session
+        session.modified = True  # Mark the session as modified
+        flash("Product added to cart succesfully", "success")
+        return redirect(url_for('get_product',name=productname))
+    return redirect(url_for('signin_page'))
+
 
 
 

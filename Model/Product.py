@@ -18,6 +18,27 @@ class Product:
         self.created_by = created_by
         self.product_type =product_type
 
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'description': self.description,
+            'stock': self.stock,
+            'price': self.price,
+            'imageurl': self.imageurl,
+            'created_by': self.created_by.email, #to do use actual user serialised user object
+            'product_type': self.product_type.name, #to do ...
+        }
+
+    # Create a Product object from a dictionary
+    @staticmethod
+    def from_dict(data):
+        return Product(
+            name=data['name'],
+            price=data['price'],
+            #to do .... complete
+        )
+
+
     def __repr__(self):
         return f"Product(name='{self.name})"
 
