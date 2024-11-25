@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+        <div class="card h-100">
+                            <!-- Product image-->
+                            <img class="card-img-top" src="{{ product.imageurl }}" alt="..." />
+                            <!-- Product details-->
+                            <div class="card-body p-4">
+                                <div class="text-center">
+                                    <!-- Product name-->
+                                    <h5 class="fw-bolder">{{ product.name }}</h5>
+                                    <p>  {{ product.description }}
+                                    </p>
+                                    <p>
+                                        Price $ {{ product.price }}
+                                    </p>
+                                    <p>
+                                        stock {{ product.stock }}
+                                    </p>
+                                    <p>
+                                        Product Type Attributes
+                                    <ul>
+                                    <li> {{ product.product_type.name }}</li>
+                                    <li> {{ product.product_type.material }}</li>
+                                    <li> {{ product.product_type.size }}</li>
+                                    </ul>
+                                    </p>
+                                </div>
+                            </div>
+                            <!-- Product actions-->
+                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">View options</a></div>
+                            </div>
+                        </div>
+
+{% endblock %}
