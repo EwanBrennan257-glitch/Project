@@ -7,6 +7,9 @@
                         <li class="nav-item"><a class="nav-link active" aria-current="page" href="{{ url_for('landing_page') }}">Home</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('about_page') }}">About</a></li>
                         {% if g.user %}
+                        {% if g.user.is_admin %}
+                        <li class="nav-item"><a class="nav-link" href="{{ url_for('create_product') }}"> Create Product </a></li>
+                         {%  endif  %}
                         <li class="nav-item"><a class="nav-link" href="#">{{ g.user.email }}</a></li>
                         <li class="nav-item"><a class="nav-link" href="{{ url_for('signout_page') }}">SignOut</a></li>
                         {% else %}

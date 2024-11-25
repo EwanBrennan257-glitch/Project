@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, session,g
+
+from flask import (Flask, render_template, request, redirect, url_for,
+flash, session,g)
 
 from Service.ProductService import ProductService
 from Service.UserService import UserService
@@ -35,6 +37,12 @@ def landing_page():
 def products_spread():
     products=ProductService().get_products()
     return render_template('ProductSpread.html',products=products)
+
+@app.route('/products/<name>')
+def get_product(name):
+    product=ProductService().get_product(name)
+    return render_template('ProductDetail.html', product=product)
+
 
 @app.route('/about')
 def about_page():
@@ -83,6 +91,29 @@ def signout_page():
 @app.route('/success')
 def success():
     return "Sign-up successful!"
+
+@app.route('/create-product', methods=['GET', 'POST'])
+def create_product():
+    if g.user and g.user.is_admin:
+        created_by = g.user
+        if request.method == 'POST':
+            name = request.form['name']
+            description = request.form['description']
+            imageurl = request.form['imageurl']
+            stock = int(request.form['stock'])
+            price = float(request.form['price'])
+            producttype_name = request.form['producttype_name']
+            producttype_material = request.form['producttype_material']
+            producttype_size = request.form['producttype_size']
+            service=ProductService()
+            service.create_product(name, description, imageurl, stock, price, created_by,
+                                   producttype_name, producttype_material, producttype_size)
+            return "Product created successfully!"  # Example response
+        return render_template('ProductCreate.html')  # Load form template for GET requests
+    flash("You are unauthorised","danger")
+    return redirect(url_for('signin_page'))
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
