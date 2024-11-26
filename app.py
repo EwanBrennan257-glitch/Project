@@ -28,7 +28,7 @@ def before_request():
             g.user=user
             #we want to allow logged in users to have the cart object
             if 'cart' not in session:
-                session['cart'] = {"user": user.email, "items": [], "quantity": 0}
+                session['cart'] = {"user": user.email, "items": [],}
             else:
                 g.cart = session['cart']
         else:

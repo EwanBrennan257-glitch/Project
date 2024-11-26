@@ -34,7 +34,12 @@ class Product:
     def from_dict(data):
         return Product(
             name=data['name'],
+            description=data['description'],
+            stock=data['stock'],
             price=data['price'],
+            imageurl=data['imageurl'],
+            created_by=data['created_by'],
+            product_type=data['product_type']
             #to do .... complete
         )
 

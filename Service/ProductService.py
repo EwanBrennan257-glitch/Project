@@ -24,8 +24,10 @@ class ProductService:
                 item["quantity"] += 1  # Increase quantity if already in the cart
                 break
         else:
+            new_item = product.to_dict()
+            new_item["quantity"] = 1
             # Add the product to the cart if not already present
-            cart["items"].append(product.to_dict())
+            cart["items"].append(new_item)
 
         # Update the number of items in the cart
         cart["numberofitems"] = sum(item["quantity"] for item in cart["items"])
