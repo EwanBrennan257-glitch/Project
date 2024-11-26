@@ -130,7 +130,46 @@ def add_to_cart():
         return redirect(url_for('get_product',name=productname))
     return redirect(url_for('signin_page'))
 
+@app.route('/MyCart', methods=['POST', 'GET'])
+def my_cart():
+    if not g.user:
+        return redirect(url_for('signin_page'))
+    else:
+        if request.method == "POST":
+            pass
+        totalprice = 0
+        for item in g.cart['items']:
+            totalprice=totalprice+(item['price'])*(item['quantity'])
+        return render_template('mycart.html' ,totalprice=totalprice, productitems=g.cart['items'])
 
+@app.route('/update_cart', methods=['POST'])
+def update_cart():
+    item_name = request.form.get('item_name')
+    action = request.form.get('action')
+    for item in g.cart['items']:
+        if item['name'] == item_name:
+            if action == 'increase' and item['quantity'] < item['stock']:
+                item['quantity'] += 1
+            elif action == 'decrease' and item['quantity'] > 1:
+                item['quantity'] -= 1
+            break
+    # Update the total number of items
+    g.cart['numberofitems'] = sum(item['quantity'] for item in g.cart['items'])
+    session['cart']=g.cart #Assigning modified cart object into session cart because we just modified it so it stays persistent
+    return redirect(url_for('my_cart'))
+
+@app.route('/remove_from_cart', methods=['POST'])
+def remove_from_cart():
+    item_name = request.form.get('item_name')
+    g.cart['items'] = [item for item in g.cart['items'] if item['name'] != item_name]
+    # Update the total number of items
+    g.cart['numberofitems'] = sum(item['quantity'] for item in g.cart['items'])
+    session['cart']=g.cart
+    return redirect(url_for('my_cart'))
+
+@app.route('/checkout')
+def checkout():
+    pass
 
 
 if __name__ == '__main__':
