@@ -81,6 +81,8 @@ def signin_page():
         if user:
             session.clear()
             session['email'] = email
+            if user.is_admin:
+                return redirect(url_for('dashboard'))
             return redirect(url_for('products_spread'))
         else:
             flash('Invalid credentials','danger')
@@ -171,6 +173,12 @@ def remove_from_cart():
 def checkout():
     pass
 
+@app.route('/dashboard')
+def dashboard():
+    if g.user and g.user.is_admin:
+        return render_template('dashboard.html')
+    flash("You are unauthorised","danger")
+    return redirect(url_for('signin_page'))
 
 if __name__ == '__main__':
     app.run(debug=True)
