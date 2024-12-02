@@ -57,7 +57,7 @@ class ProductDAO:
         P2 = Product(name=f"product_{2}", description=f"description {2}", imageurl="/static/Images/product_2.png",
             stock=10, price=20, created_by=User.getadmin(), product_type=product_types[1])
 
-        P3 = Product(name=f"product_{3}", description=f"description {3}", imageurl="/static/Images/product_1.png",
+        P3 = Product(name=f"T-Shirt", description=f"description {3}", imageurl="/static/Images/product_3.png",
             stock=10, price=20, created_by=User.getadmin(), product_type=product_types[2])
 
         P4 = Product(name=f"product_{4}", description=f"description {4}", imageurl="/static/Images/product_2.png",

@@ -35,9 +35,6 @@ def before_request():
             session.clear()
 #Landing Page Route
 @app.route('/')
-def landing_page():
-    return render_template('LandingPage.html')
-
 @app.route('/products')
 def products_spread():
     products=ProductService().get_products()
@@ -45,8 +42,13 @@ def products_spread():
 
 @app.route('/products/<name>')
 def get_product(name):
-    product=ProductService().get_product(name)
-    return render_template('ProductDetail.html', product=product)
+    try:
+        product=ProductService().get_product(name)
+        return render_template('ProductDetail.html', product=product)
+    except Exception as e:
+        print(e)
+        flash('The Product does not exist','danger')
+        return redirect(url_for('products_spread'))
 
 
 @app.route('/about')
@@ -171,7 +173,10 @@ def remove_from_cart():
 
 @app.route('/checkout')
 def checkout():
-    pass
+    session['cart'] = {"user": g.user.email, "items": [],}
+    #clearing cart items when confirming order
+    flash("Your order has been Confirmed", "success")
+    return redirect(url_for('products_spread'))
 
 @app.route('/dashboard')
 def dashboard():

@@ -1,41 +1,36 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-        <div class="card h-100">
-                            <!-- Product image-->
-                            <img class="card-img-top" src="{{ product.imageurl }}" alt="..." />
-                            <!-- Product details-->
-                            <div class="card-body p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">{{ product.name }}</h5>
-                                    <p>  {{ product.description }}
-                                    </p>
-                                    <p>
-                                        Price $ {{ product.price }}
-                                    </p>
-                                    <p>
-                                        stock {{ product.stock }}
-                                    </p>
-                                    <p>
-                                        Product Type Attributes
-                                    <ul>
-                                    <li> {{ product.product_type.name }}</li>
-                                    <li> {{ product.product_type.material }}</li>
-                                    <li> {{ product.product_type.size }}</li>
-                                    </ul>
-                                    </p>
-                                </div>
-                            </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <form method="post" action="{{ url_for('add_to_cart') }}">
-                                    <input type="hidden" name="productname" value="{{ product.name }}">
-                                    <button class="btn btn-primary" type="submit"> Add To Cart </button>
-                                </form>
-
-                            </div>
-                        </div>
-
+<div class="container py-4">
+  <div class="card shadow-lg border-0 mb-4" style="max-width: 720px;">
+    <div class="row g-0">
+      <div class="col-md-5 d-flex align-items-center bg-light">
+        <img src="{{ product.imageurl }}" class="img-fluid rounded-start" alt="{{ product.name }}">
+      </div>
+      <div class="col-md-7">
+        <div class="card-body">
+          <h4 class="card-title text-primary fw-bold">{{ product.name }}</h4>
+          <p class="card-text text-muted">{{ product.description }}</p>
+          <hr>
+          <p class="mb-1"><strong>Price:</strong> ${{ product.price }}</p>
+          <p class="mb-3"><strong>Stock:</strong> {{ product.stock }}</p>
+          <h6 class="fw-bold">Product Type Attributes:</h6>
+          <ul class="list-unstyled">
+            <li><strong>Type:</strong> {{ product.product_type.name }}</li>
+            <li><strong>Material:</strong> {{ product.product_type.material }}</li>
+            <li><strong>Size:</strong> {{ product.product_type.size }}</li>
+          </ul>
+        </div>
+        <div class="card-footer bg-white border-0 d-flex justify-content-end">
+          <form method="post" action="{{ url_for('add_to_cart') }}">
+            <input type="hidden" name="productname" value="{{ product.name }}">
+            <button class="btn btn-primary" type="submit">
+              <i class="bi bi-cart-plus"></i> Add To Cart
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}
