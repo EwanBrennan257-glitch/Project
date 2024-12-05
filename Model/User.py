@@ -1,7 +1,8 @@
 
 
 
-class User:
+class User:#represents a user and its required details
+    #intialises the user with these details
     def __init__(self, firstname:str, lastname:str, email:str, password:str, is_admin:bool=False):
         self.firstname = firstname
         self.lastname = lastname
@@ -10,12 +11,12 @@ class User:
         self.is_admin = is_admin
 
 
-
+    #checks to seeif the user email is valid if it is already in use or not
     def checkEmail(userList, email):
         if "@" not in email or "." not in email:
             print("Email doesn't have the key characters '@' and '.'")
             return False
-
+        #returns with the correct message to what the error is for the user
         for user in userList:
             if user.userEmail == email:
                 print("Email already has an account")
@@ -23,11 +24,11 @@ class User:
 
         return True
 
-    def __repr__(self):
+    def __repr__(self):#string representation of the user and email
         return f"User(email='{self.email})"
 
     @staticmethod
-    def getadmin():
+    def getadmin():#returns the first admin user from the user list
         from DAO.UserDao import UserDAO
         for user in UserDAO().getAllUsers():
             if user.is_admin:

@@ -1,17 +1,17 @@
-from DAO.ProductDao import ProductDAO
+from DAO.ProductDao import ProductDAO# import product DAO so it can interact with the product data
 
 class ProductService:
-    def __init__(self):
+    def __init__(self):#intialises productservice and creates an instance of productdao
         self.productDAO = ProductDAO()
 
-    def get_products(self):
+    def get_products(self):# takes products from the DAO
         return self.productDAO.getAllProducts()
 
 
-    def get_product(self, name):
+    def get_product(self, name):#takes a single product taken by its name
         return self.productDAO.get_product_by_name(name)
 
-    def add_product_to_cart(self, user, productname, cart):
+    def add_product_to_cart(self, user, productname, cart):#adds a product to the users shopping cart
         product = self.get_product(productname)  # Fetch product details
 
         # Check if the product is already in the cart

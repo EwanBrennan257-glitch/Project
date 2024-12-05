@@ -24,11 +24,11 @@ class UserDAO:
 
         return self.user_list
 
-    # Add a new model to the list
+    # Add a new user to the list
     def addusertolist(self, user):
         self.user_list.append(user)
 
-    def getManager(self):
+    def getManager(self):#finds users that are marked as admins
         for user in self.user_list:
-            if user.is_admin: return user
+            if user.is_admin: return user#if the user is admin then they are returned
 
