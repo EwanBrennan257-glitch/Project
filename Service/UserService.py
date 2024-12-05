@@ -31,9 +31,9 @@ class UserService:
     def create_user(self, firstname, lastname, email, password):
         try:
             if self.userValidation.checkEmail(self.userDAO.getAllUsers(), email) and self.userValidation.checkPassword(password):
-                user=User(firstname, lastname, email, password)
-                self.userDAO.addusertolist(user)
-                return (user, 'User Created')
+                user=User(firstname, lastname, email, password)#user class and passing firstname etc given by the signup process
+                self.userDAO.addusertolist(user)# when user is created they are added to the user list
+                return (user, 'User Created')#message that pops up
             else:
                 return (False, 'Invalid Email or Password')
         except PasswordLengthError as ple:

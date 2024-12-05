@@ -17,7 +17,7 @@ class UserDAO:
         if not self.user_list:  # Check if the list is empty
             # Create default users if list is empty
             user_manager = User("Admin", "Admin", "Admin@gmail.com", "pw1", True)
-            user_employee = User("Daniel", "Doe", "Daniel@gmail.com", "pw2", False)
+            user_employee = User("User", "User", "User@gmail.com", "pw2", False)
 
             self.user_list.append(user_manager)
             self.user_list.append(user_employee)
