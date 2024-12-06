@@ -1,15 +1,29 @@
-
+import os
+import sqlite3
 from flask import (Flask, render_template, request, redirect, url_for,
-flash, session,g)
-
+flash, session,g, current_app)
+import click
 from Service.ProductService import ProductService
 from Service.UserService import UserService
 from Validation.UserValidation import UserValidation
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATABASE=os.path.join(BASE_DIR, 'Ecommerce.db')
 
+@click.command("initdb")
+def initdb():
+    with current_app.open_resource('database.sql') as f:
+        get_db().executescript(f.read().decode("utf-8"))
+    click.echo("Initializing")
 app = Flask(__name__)
-
+app.cli.add_command(initdb)
 app.secret_key = "mysecretkey"
+
+def get_db():
+    db = getattr(g, '_database', None)
+    if db is None:
+        db = g._database = sqlite3.connect(DATABASE)
+    return db
 
 """before every request this function will check the session object has email or not
  if email exists we will get user, if user exists we assign global user
