@@ -3,12 +3,14 @@
 
 class User:#represents a user and its required details
     #intialises the user with these details
-    def __init__(self, firstname:str, lastname:str, email:str, password:str, is_admin:bool=False):
+    def __init__(self,id:int, firstname:str, lastname:str, email:str, password:str, is_admin:bool=False, is_active:bool=False):
+        self.id = id
         self.firstname = firstname
         self.lastname = lastname
         self.email = email
         self.password = password
         self.is_admin = is_admin
+        self.is_active = is_active
 
 
     #checks to seeif the user email is valid if it is already in use or not

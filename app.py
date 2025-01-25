@@ -3,6 +3,8 @@ import sqlite3
 from flask import (Flask, render_template, request, redirect, url_for,
 flash, session,g, current_app)
 import click
+
+from Model.User import User
 from Service.ProductService import ProductService
 from Service.UserService import UserService
 from Validation.UserValidation import UserValidation
@@ -12,9 +14,33 @@ DATABASE=os.path.join(BASE_DIR, 'Ecommerce.db')
 
 @click.command("initdb")
 def initdb():
+    #to intialise database run flask initdb
     with current_app.open_resource('database.sql') as f:
         get_db().executescript(f.read().decode("utf-8"))
     click.echo("Initializing")
+
+def insert_user(firstname, lastname, email, password, is_admin, is_active):
+    mydb=get_db()
+    mydb.execute("""INSERT INTO User(firstname, lastname, email, password, is_admin, is_active) VALUES (?,?,?,?,?,?)""",
+                 (firstname, lastname, email, password, is_admin, is_active))
+    mydb.commit()
+
+def select_user(email, password):
+    mydb=get_db()
+    row=mydb.execute("""SELECT id, firstname, lastname, email, password, is_admin, is_active FROM User WHERE email = ?""",
+                 (email,)).fetchone()
+    if row:
+        user=User(id=row[0], firstname=row[1], lastname=row[2], email=row[3], password=row[4], is_admin=row[5], is_active=row[6])
+        return user
+
+def select_user_by_email(email):
+    mydb=get_db()
+    row=mydb.execute("""SELECT id, firstname, lastname, email, password, is_admin, is_active FROM User WHERE email = ?""",
+                 (email,)).fetchone()
+    if row:
+        user=User(id=row[0], firstname=row[1], lastname=row[2], email=row[3], password=row[4], is_admin=row[5], is_active=row[6])
+        return user
+
 app = Flask(__name__)
 app.cli.add_command(initdb)
 app.secret_key = "mysecretkey"
@@ -115,7 +141,8 @@ def signin_page():
         email = request.form['email']
         password = request.form['password']
         validation = UserValidation()
-        user=UserService(validation).signin(email, password)
+        user=UserService(validation).get_user(email, password)
+
         if user:
             session.clear()
             session['email'] = email
