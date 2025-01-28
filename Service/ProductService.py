@@ -1,5 +1,5 @@
 from DAO.ProductDao import ProductDAO# import product DAO so it can interact with the product data
-
+from db import create_product, create_producttype
 class ProductService:
     def __init__(self):#intialises productservice and creates an instance of productdao
         self.productDAO = ProductDAO()
@@ -29,6 +29,13 @@ class ProductService:
         cart["numberofitems"] = sum(item["quantity"] for item in cart["items"])
 
         return cart
+
+    def create_product(self,name, description, stock, price, imageurl, created_by,
+                    created_at, producttypename, producttypematerial, producttypesize):
+        #calling database function to create a new product
+        product_type = create_producttype(producttypename, producttypematerial, producttypesize)
+        create_product(name, description, stock, price, imageurl, created_by,
+                   product_type, created_at)
 
 
 

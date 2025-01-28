@@ -1,16 +1,12 @@
 from db import initdb
 from flask import (Flask, render_template, request, redirect, url_for,
 flash, session,g)
-
+import datetime
 
 
 from Service.ProductService import ProductService
 from Service.UserService import UserService
 from Validation.UserValidation import UserValidation
-
-
-
-
 
 app = Flask(__name__)
 app.cli.add_command(initdb)
@@ -127,6 +123,26 @@ def signout_page():#Clears the session of the user and displays a pop telling th
     flash('You have been signed out',"warning")
     return redirect(url_for('signin_page'))
 
+@app.route('/create-product', methods=['GET', 'POST'])
+def create_product():
+    if g.user and g.user.is_admin:
+        if request.method == 'POST':
+            service=ProductService()
+            name = request.form['name']
+            description = request.form['description']
+            stock = request.form['stock']
+            price = request.form['price']
+            imageurl = request.form['imageurl']
+            producttypename = request.form['producttypename']
+            producttypematerial = request.form['producttypematerial']
+            producttypesize = request.form['producttypesize']
+            createdby = g.user.id
+            createdat = datetime.datetime.now(datetime.timezone.utc)
+            service.create_product(name, description, stock, price, imageurl,createdby, createdat, producttypename, producttypematerial, producttypesize)
+            flash('Product added sucessfully', "success")
+            return redirect(url_for('products_spread'))
+        return render_template('createproduct.html')
+    return redirect(url_for('signin_page'))
 
 @app.route('/Cart', methods=['POST'])
 def add_to_cart():

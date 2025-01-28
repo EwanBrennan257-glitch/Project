@@ -11,6 +11,13 @@ CREATE TABLE User (
     is_active BOOLEAN NOT NULL DEFAULT 1
 );
 
+CREATE TABLE ProductType (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(20) NOT NULL,
+    material VARCHAR(20) NOT NULL,
+    size VARCHAR(20) NOT NULL
+);
+
 CREATE TABLE Product (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(255) NOT NULL,
@@ -19,8 +26,8 @@ CREATE TABLE Product (
     price DECIMAL(10, 2) NOT NULL CHECK (price >= 0.00),
     imageurl VARCHAR(255) NOT NULL,
     created_by INT NOT NULL,
-    product_type VARCHAR(255) NOT NULL,
+    product_type INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (created_by) REFERENCES User(id) ON DELETE CASCADE
+    FOREIGN KEY (created_by) REFERENCES User(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_type) REFERENCES ProductType(id) ON DELETE CASCADE
 );
-

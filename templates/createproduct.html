@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{%  block content %}
+
+    <div class="container mt-5">
+        <h2 class="mb-4">Add Product</h2>
+        <form method="POST" action="/create-product">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="name" name="name" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="stock" class="form-label">Stock</label>
+                <input type="number" class="form-control" id="stock" name="stock" min="0" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="price" class="form-label">Price</label>
+                <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="imageurl" class="form-label">Image URL</label>
+                <input type="url" class="form-control" id="imageurl" name="imageurl" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="producttypename" class="form-label">Product Type Name</label>
+                <input type="text" class="form-control" id="producttypename" name="producttypename" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="producttypematerial" class="form-label">Product Type Material</label>
+                <input type="text" class="form-control" id="producttypematerial" name="producttypematerial" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="producttypesize" class="form-label">Product Type Size</label>
+                <input type="text" class="form-control" id="producttypesize" name="producttypesize" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+{% endblock %}

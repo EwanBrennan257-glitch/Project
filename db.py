@@ -3,7 +3,7 @@ import sqlite3
 import click
 import os
 
-from Model.User import User
+from Model.User import UserRead, User
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE=os.path.join(BASE_DIR, 'Ecommerce.db')
 
@@ -25,7 +25,7 @@ def select_user(email, password):
     row=mydb.execute("""SELECT id, firstname, lastname, email, password, is_admin, is_active FROM User WHERE email = ?""",
                  (email,)).fetchone()
     if row:
-        user=User(id=row[0], firstname=row[1], lastname=row[2], email=row[3], password=row[4], is_admin=row[5], is_active=row[6])
+        user=UserRead(id=row[0], firstname=row[1], lastname=row[2], email=row[3], password=row[4], is_admin=row[5], is_active=row[6])
         return user
 
 def select_user_by_email(email):
@@ -33,7 +33,7 @@ def select_user_by_email(email):
     row=mydb.execute("""SELECT id, firstname, lastname, email, password, is_admin, is_active FROM User WHERE email = ?""",
                  (email,)).fetchone()
     if row:
-        user=User(id=row[0], firstname=row[1], lastname=row[2], email=row[3], password=row[4], is_admin=row[5], is_active=row[6])
+        user=UserRead(id=row[0], firstname=row[1], lastname=row[2], email=row[3], password=row[4], is_admin=row[5], is_active=row[6])
         return user
 
 def get_db():
@@ -41,3 +41,20 @@ def get_db():
     if db is None:
         db = g._database = sqlite3.connect(DATABASE)
     return db
+
+def create_product(name, description, stock, price, imageurl, created_by,
+                   product_type, created_at):
+    mydb=get_db()
+    mydb.execute("""INSERT INTO Product(name, description, stock, price, imageurl, created_by, product_type, created_at) VALUES(?,?,?,?,?,?,?,?)""",
+                 (name, description, stock, price, imageurl, created_by, product_type, created_at))
+    mydb.commit()
+
+def create_producttype(name, material, size):
+    mydb=get_db()
+    with mydb:
+        cursor=mydb.cursor()
+        cursor.execute("""INSERT INTO ProductType(name, material, size) VALUES(?,?,?)""",
+                 (name, material, size))
+        lastrowid=cursor.lastrowid
+        if lastrowid:
+            return lastrowid
