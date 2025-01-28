@@ -1,8 +1,7 @@
 from DAO.UserDao import UserDAO
 from Model.User import User
 from Validation.UserValidation import PasswordLengthError,PasswordCharacterError
-
-
+from db import select_user_by_email, insert_user, select_user
 
 class UserService:
 
@@ -12,7 +11,6 @@ class UserService:
         self.userValidation = userValidation
 
     def get_user_by_email(self,email):#gets a user by email from the DAO
-        from app import select_user_by_email
         return select_user_by_email(email)
 
 
@@ -28,12 +26,10 @@ class UserService:
                 return user
 
     def get_user(self, email, password):
-        from app import select_user
         user=select_user(email, password)
         return user
 
     def create_user(self, firstname, lastname, email, password):#creates a new user
-        from app import insert_user
         try:
             if self.userValidation.checkEmail(self.userDAO.getAllUsers(), email) and self.userValidation.checkPassword(password):
                 user=User(firstname, lastname, email, password)#user class and passing firstname etc given by the signup process
