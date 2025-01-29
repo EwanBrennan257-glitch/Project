@@ -4,6 +4,8 @@ import click
 import os
 
 from Model.User import UserRead, User
+from Model.Product import ProductRead, ProductTypeRead
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASE=os.path.join(BASE_DIR, 'Ecommerce.db')
 
@@ -58,3 +60,49 @@ def create_producttype(name, material, size):
         lastrowid=cursor.lastrowid
         if lastrowid:
             return lastrowid
+
+def select_products():
+    mydb=get_db()
+    rows=mydb.execute("""SELECT id, name, description, stock, price, imageurl, created_by, product_type, created_at FROM Product""").fetchall()
+    products=[ProductRead(id=row[0],
+                          name=row[1],
+                          description=row[2],
+                          stock=row[3],
+                          price=row[4],
+                          imageurl=row[5],
+                          created_by=row[6],
+                          product_type=row[7],
+                          created_at=row[8]).to_dict() for row in rows]
+    return products
+
+def select_product_by_name(productname):
+    mydb=get_db()
+    row=mydb.execute("""SELECT id, name, description, stock, price, imageurl, created_by, product_type, created_at FROM Product WHERE name = ?""",
+                     (productname,)).fetchone()
+    if row:
+        product_type_id=row[7]#row 7 contains product type id
+        #it fetches product type from database by calling select product type by id function
+        #we assign product type object to product_typeobject
+        product_typeobject=select_product_type_by_id(product_type_id)
+        product=ProductRead(id=row[0],
+                     name=row[1],
+                     description=row[2],
+                     stock=row[3],
+                     price=row[4],
+                     imageurl=row[5],
+                     created_by=row[6],
+                     product_type=product_typeobject,#assign product type object to Product's product_type field
+                     created_at=row[8]).to_dict()
+        return product
+
+def select_product_type_by_id(id):
+    mydb = get_db()
+    row=mydb.execute("""select id, name, material, size FROM ProductType WHERE id = ?"""
+                     ,(id,)).fetchone()
+    if row:
+        producttype=ProductTypeRead(id=row[0],
+                                    name=row[1],
+                                    material=row[2],
+                                    size=row[3]).to_dict()
+        return producttype
+

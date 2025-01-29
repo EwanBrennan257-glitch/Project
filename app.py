@@ -7,6 +7,7 @@ import datetime
 from Service.ProductService import ProductService
 from Service.UserService import UserService
 from Validation.UserValidation import UserValidation
+from db import select_products, select_product_by_name
 
 app = Flask(__name__)
 app.cli.add_command(initdb)
@@ -46,7 +47,7 @@ def products_spread():
     '''
     This endpoint is the main homepage for users it retrieves products to display them from productserivce
     '''
-    products=ProductService().get_products()
+    products=select_products()
     return render_template('ProductSpread.html',products=products)
 
 @app.route('/products/<name>')
@@ -57,7 +58,7 @@ def get_product(name):
     Exception used so that it can handle all errors and display message to users
     '''
     try:
-        product=ProductService().get_product(name)
+        product=select_product_by_name(name)
         return render_template('ProductDetail.html', product=product)
     except Exception as e:
         print(e)
