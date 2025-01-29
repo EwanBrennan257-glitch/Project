@@ -6,16 +6,16 @@ GLOBAL_PRODUCT_LIST=list()
 
 # class to hold all users in memory, using this instead of database
 class ProductDAO:
-
     is_defaultproductscreated=False
     def __init__(self, product_list=None):
+        pass
         # Initialize user_list as an empty list if None is provided
-        self.product_list = GLOBAL_PRODUCT_LIST
-        if product_list:
-            self.product_list.extend(product_list)
-        if not self.is_defaultproductscreated:
-            self.product_list=self.create_default_products()
-            self.is_defaultproductscreated=True
+        #self.product_list = GLOBAL_PRODUCT_LIST
+        #if product_list:
+            #self.product_list.extend(product_list)
+        #if not self.is_defaultproductscreated:
+            #self.product_list=self.create_default_products()
+            #self.is_defaultproductscreated=True
 
     # This method grabs all users, and creates some if the list is empty
     def getAllProducts(self):# Returns the entire list of products stored in the product_list attribute
