@@ -184,10 +184,16 @@ def update_cart():
     action = request.form.get('action')
     for item in g.cart['items']:
         if item['name'] == item_name:
-            if action == 'increase' and item['quantity'] < item['stock']:
-                item['quantity'] += 1
-            elif action == 'decrease' and item['quantity'] > 1:
-                item['quantity'] -= 1
+            if action == 'increase':
+                if item['stock']==1:
+                    flash("Not enough stock to increase quantity" ,"warning")
+                elif item['quantity'] < item['stock']:
+                    item['quantity'] += 1
+            elif action == 'decrease':
+                if item['stock']==1:
+                    flash("Not enough stock to decrease quantity","warning")
+                elif item['quantity'] > 1:
+                    item['quantity'] -= 1
             break
     # Update the total number of items
     g.cart['numberofitems'] = sum(item['quantity'] for item in g.cart['items'])

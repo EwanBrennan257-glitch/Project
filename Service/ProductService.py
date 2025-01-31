@@ -16,6 +16,8 @@ class ProductService:
         # Check if the product is already in the cart
         for item in cart["items"]:
             if item["name"] == product["name"]:
+                if item["stock"]==1:
+                    return cart
                 item["quantity"] += 1  # Increase quantity if already in the cart
                 break
         else:
