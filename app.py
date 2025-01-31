@@ -7,7 +7,7 @@ import datetime
 from Service.ProductService import ProductService
 from Service.UserService import UserService
 from Validation.UserValidation import UserValidation
-from db import select_products, select_product_by_name
+from db import select_products, select_product_by_name, update_product
 
 app = Flask(__name__)
 app.cli.add_command(initdb)
@@ -65,6 +65,32 @@ def get_product(name):
         flash('The Product does not exist','danger')
         return redirect(url_for('products_spread'))
 
+@app.route('/products/<name>/edit', methods=['GET', 'POST'])
+def product_edit(name):
+    #only admin users can access this page
+    if g.user and g.user.is_admin:
+        try:
+            product=select_product_by_name(name)
+            if request.method == 'POST':
+                name=request.form['name']
+                description=request.form['description']
+                stock=request.form['stock']
+                price=request.form['price']
+                imageurl=request.form['imageurl']
+                producttypename=request.form['producttypename']
+                producttypematerial=request.form['producttypematerial']
+                producttypesize=request.form['producttypesize']
+                product_typeid=product['product_type']['id']
+                update_product(product['id'], name,description,stock,price,imageurl, product_typeid, producttypename, producttypematerial, producttypesize)
+                flash('Product Updated','success')
+                return redirect(url_for('get_product', name=product['name']))
+            return render_template('ProductEdit.html', product=product)
+        except Exception as e:
+            print(e)
+            flash('Error while updating','danger')
+            return redirect(url_for('products_spread'))
+    flash('Unauthorised users cannot edit product','danger')
+    return redirect(url_for('products_spread'))
 
 @app.route('/about')#Takes the user to the about page that does not service any real purpose
 def about_page():

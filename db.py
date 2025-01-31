@@ -106,3 +106,15 @@ def select_product_type_by_id(id):
                                     size=row[3]).to_dict()
         return producttype
 
+def update_product_type(id, name, material, size):
+    mydb = get_db()
+    row=mydb.execute("""UPDATE ProductType SET name = ?, material = ?, size = ? WHERE id =?""",
+                     (name, material, size, id))
+    mydb.commit()
+
+def update_product(id, name, description, stock, price, imageurl, producttypeid, producttypename, producttypematerial, producttypesize):
+    update_product_type(producttypeid, producttypename, producttypematerial, producttypesize)
+    mydb = get_db()
+    row=mydb.execute("""UPDATE Product SET name = ?, description = ?, stock = ?, price = ?, imageurl = ? WHERE id=?""",
+                     (name, description, stock, price, imageurl, id))
+    mydb.commit()
