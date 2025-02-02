@@ -106,6 +106,15 @@ def select_product_type_by_id(id):
                                     size=row[3]).to_dict()
         return producttype
 
+def select_products_types():
+    mydb=get_db()
+    rows=mydb.execute("""SELECT id, name, material, size FROM ProductType""").fetchall()
+    producttypes=[ProductTypeRead(id=row[0],
+                                  name=row[1],
+                                  material=row[2],
+                                  size=row[3],
+                                  ).to_dict() for row in rows]
+    return producttypes
 def update_product_type(id, name, material, size):
     mydb = get_db()
     row=mydb.execute("""UPDATE ProductType SET name = ?, material = ?, size = ? WHERE id =?""",
@@ -118,6 +127,16 @@ def update_product(id, name, description, stock, price, imageurl, producttypeid,
         mydb = get_db()
         row=mydb.execute("""UPDATE Product SET name = ?, description = ?, stock = ?, price = ?, imageurl = ? WHERE id=?""",
                          (name, description, stock, price, imageurl, id))
+        mydb.commit()
+        return True
+    except Exception as e:
+        print(e)
+        return False
+
+def delete_product_by_name(name):
+    try:
+        mydb = get_db()
+        row=mydb.execute("""DELETE FROM Product WHERE name = ?""",(name,))
         mydb.commit()
         return True
     except Exception as e:

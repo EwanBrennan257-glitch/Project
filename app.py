@@ -7,7 +7,7 @@ import datetime
 from Service.ProductService import ProductService
 from Service.UserService import UserService
 from Validation.UserValidation import UserValidation
-from db import select_products, select_product_by_name, update_product
+from db import select_products, select_product_by_name, update_product, delete_product_by_name, select_products_types
 
 app = Flask(__name__)
 app.cli.add_command(initdb)
@@ -42,13 +42,16 @@ def before_request():
         else:
             session.clear()
 
-@app.route('/')
+@app.route('/',methods=['GET','POST'])
 def products_spread():
     '''
     This endpoint is the main homepage for users it retrieves products to display them from productserivce
     '''
+    product_types=select_products_types()
+    if request.method=="POST":
+        breakpoint()
     products=select_products()
-    return render_template('ProductSpread.html',products=products)
+    return render_template('ProductSpread.html',products=products,product_types=product_types)
 
 @app.route('/products/<name>')
 def get_product(name):
@@ -93,6 +96,21 @@ def product_edit(name):
             return redirect(url_for('products_spread'))
     flash('Unauthorised users cannot edit product','danger')
     return redirect(url_for('products_spread'))
+
+@app.route('/products/<name>/delete', methods=['POST'])
+def product_delete(name):
+    if g.user and g.user.is_admin:
+        try:
+            is_deleted=delete_product_by_name(name)
+            if is_deleted:
+                flash('Deleted Sucessfully','success')
+                return redirect(url_for('products_spread'))
+            flash ('Error while deleting','danger')
+            return redirect(url_for('products_spread'))
+        except Exception as e:
+            flash('Product does not exist','danger')
+            return redirect(url_for('products_spread'))
+
 
 @app.route('/about')#Takes the user to the about page that does not service any real purpose
 def about_page():
