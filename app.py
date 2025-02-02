@@ -81,9 +81,11 @@ def product_edit(name):
                 producttypematerial=request.form['producttypematerial']
                 producttypesize=request.form['producttypesize']
                 product_typeid=product['product_type']['id']
-                update_product(product['id'], name,description,stock,price,imageurl, product_typeid, producttypename, producttypematerial, producttypesize)
-                flash('Product Updated','success')
-                return redirect(url_for('get_product', name=product['name']))
+                isupdated=update_product(product['id'], name,description,stock,price,imageurl, product_typeid, producttypename, producttypematerial, producttypesize)
+                if isupdated:
+                    flash('Product Updated','success')
+                    return redirect(url_for('get_product', name=name))
+                flash('Product Not Updated','warning')
             return render_template('ProductEdit.html', product=product)
         except Exception as e:
             print(e)

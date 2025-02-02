@@ -113,8 +113,13 @@ def update_product_type(id, name, material, size):
     mydb.commit()
 
 def update_product(id, name, description, stock, price, imageurl, producttypeid, producttypename, producttypematerial, producttypesize):
-    update_product_type(producttypeid, producttypename, producttypematerial, producttypesize)
-    mydb = get_db()
-    row=mydb.execute("""UPDATE Product SET name = ?, description = ?, stock = ?, price = ?, imageurl = ? WHERE id=?""",
-                     (name, description, stock, price, imageurl, id))
-    mydb.commit()
+    try:
+        update_product_type(producttypeid, producttypename, producttypematerial, producttypesize)
+        mydb = get_db()
+        row=mydb.execute("""UPDATE Product SET name = ?, description = ?, stock = ?, price = ?, imageurl = ? WHERE id=?""",
+                         (name, description, stock, price, imageurl, id))
+        mydb.commit()
+        return True
+    except Exception as e:
+        print(e)
+        return False
