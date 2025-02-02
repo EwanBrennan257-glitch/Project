@@ -123,3 +123,13 @@ def update_product(id, name, description, stock, price, imageurl, producttypeid,
     except Exception as e:
         print(e)
         return False
+
+def delete_product_by_name(name):
+    try:
+        mydb = get_db()
+        row=mydb.execute("""DELETE FROM Product WHERE name = ?""",(name,))
+        mydb.commit()
+        return True
+    except Exception as e:
+        print(e)
+        return False

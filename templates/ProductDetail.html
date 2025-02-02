@@ -37,7 +37,10 @@
     </div>
     <div class="col">
         {% if g.user.is_admin %}
-    <a class="btn btn-warning" href="{{ url_for('product_edit', name=product.name) }}"> edit</a>
+    <a class="btn btn-warning" href="{{ url_for('product_edit', name=product.name) }}"> Edit</a>
+            <form action="{{ url_for('product_delete', name=product.name) }}" method="post">
+            <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
     {% endif %}
     </div>
 </div>
