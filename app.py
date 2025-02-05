@@ -47,7 +47,7 @@ def products_spread():
     '''
     This endpoint is the main homepage for users it retrieves products to display them from productserivce
     '''
-    product_types=select_products_types()
+    pt_names, pt_materials, pt_sizes =select_products_types()
     producttypename=request.args.get('producttypename')
     producttypematerial = request.args.get('producttypematerial')
     producttypesize = request.args.get('producttypesize')
@@ -55,7 +55,8 @@ def products_spread():
         products=filter_products(name=producttypename, material=producttypematerial, size=producttypesize)
     else:
         products=select_products()
-    return render_template('ProductSpread.html',products=products,product_types=product_types,
+    return render_template('ProductSpread.html',products=products,
+                            pt_names=pt_names, pt_materials=pt_materials, pt_sizes=pt_sizes,
                            selected_producttypename=producttypename, selected_producttypematerial=producttypematerial,
                            selected_producttypesize=producttypesize)
 

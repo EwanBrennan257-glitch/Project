@@ -17,8 +17,8 @@
         <div class="col">
                   <select class="form-select" aria-label="Default select example"  name="producttypename">
 
-            {% for product_type in product_types %}
-          <option value="{{ product_type.name }}" {% if selected_producttypename==product_type.name %}selected{% endif %} >{{ product_type.name }}</option>
+            {% for name in pt_names %}
+          <option value="{{ name }}" {% if selected_producttypename==name %}selected{% endif %} >{{ name }}</option>
             {% endfor %}
         </select>
         </div>
@@ -26,16 +26,16 @@
                 <select class="form-select" aria-label="Default select example"  name="producttypematerial">
 
 
-            {% for product_type in product_types %}
-          <option value="{{ product_type.material }}"{% if selected_producttypematerial==product_type.material %}selected{% endif %}>{{ product_type.material }}</option>
+            {% for material in pt_materials %}
+          <option value="{{ material }}"{% if selected_producttypematerial==material %}selected{% endif %}>{{ material }}</option>
             {% endfor %}
         </select>
         </div>
         <div class="col">
                 <select class="form-select" aria-label="Default select example"  name="producttypesize">
 
-            {% for product_type in product_types %}
-          <option value="{{ product_type.size }}"{% if selected_producttypesize==product_type.size %}selected{% endif %}>{{ product_type.size }}</option>
+            {% for size in pt_sizes %}
+          <option value="{{ size }}"{% if selected_producttypesize==size %}selected{% endif %}>{{ size }}</option>
             {% endfor %}
         </select>
         </div>

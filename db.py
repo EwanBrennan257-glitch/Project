@@ -106,6 +106,19 @@ def select_product_type_by_id(id):
                                     size=row[3]).to_dict()
         return producttype
 
+def unique_product_types(data):
+    """This function removes duplicated data from producttypes array"""
+    producttypenames = set()
+    producttypematerials = set()
+    producttypesizes = set()
+
+
+    for item in data:
+        producttypenames.add(item['name'])
+        producttypematerials.add(item['material'])
+        producttypesizes.add(item['size'])
+    return (producttypenames, producttypematerials, producttypesizes)
+
 def select_products_types():
     mydb=get_db()
     rows=mydb.execute("""SELECT id, name, material, size FROM ProductType""").fetchall()
@@ -114,7 +127,7 @@ def select_products_types():
                                   material=row[2],
                                   size=row[3],
                                   ).to_dict() for row in rows]
-    return producttypes
+    return unique_product_types(producttypes)
 def update_product_type(id, name, material, size):
     mydb = get_db()
     row=mydb.execute("""UPDATE ProductType SET name = ?, material = ?, size = ? WHERE id =?""",
