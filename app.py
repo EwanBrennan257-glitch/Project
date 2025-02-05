@@ -7,7 +7,7 @@ import datetime
 from Service.ProductService import ProductService
 from Service.UserService import UserService
 from Validation.UserValidation import UserValidation
-from db import select_products, select_product_by_name, update_product, delete_product_by_name, select_products_types
+from db import select_products, select_product_by_name, update_product, delete_product_by_name, select_products_types,filter_products
 
 app = Flask(__name__)
 app.cli.add_command(initdb)
@@ -48,10 +48,16 @@ def products_spread():
     This endpoint is the main homepage for users it retrieves products to display them from productserivce
     '''
     product_types=select_products_types()
-    if request.method=="POST":
-        breakpoint()
-    products=select_products()
-    return render_template('ProductSpread.html',products=products,product_types=product_types)
+    producttypename=request.args.get('producttypename')
+    producttypematerial = request.args.get('producttypematerial')
+    producttypesize = request.args.get('producttypesize')
+    if producttypename:
+        products=filter_products(name=producttypename, material=producttypematerial, size=producttypesize)
+    else:
+        products=select_products()
+    return render_template('ProductSpread.html',products=products,product_types=product_types,
+                           selected_producttypename=producttypename, selected_producttypematerial=producttypematerial,
+                           selected_producttypesize=producttypesize)
 
 @app.route('/products/<name>')
 def get_product(name):

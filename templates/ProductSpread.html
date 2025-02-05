@@ -12,14 +12,37 @@
         </header>
     <div class="row">
     <div class="col">
-    <form method="post" action="{{ url_for('products_spread') }}">
-      <select class="form-select" aria-label="Default select example">
+    <form method="get" action="{{ url_for('products_spread') }}">
+    <div class="row my-4">
+        <div class="col">
+                  <select class="form-select" aria-label="Default select example"  name="producttypename">
 
             {% for product_type in product_types %}
-          <option name="producttypename" value="{{ product_type.name }}">{{ product_type.name }}</option>
+          <option value="{{ product_type.name }}" {% if selected_producttypename==product_type.name %}selected{% endif %} >{{ product_type.name }}</option>
             {% endfor %}
         </select>
-    <button type="submit">
+        </div>
+        <div class="col">
+                <select class="form-select" aria-label="Default select example"  name="producttypematerial">
+
+
+            {% for product_type in product_types %}
+          <option value="{{ product_type.material }}"{% if selected_producttypematerial==product_type.material %}selected{% endif %}>{{ product_type.material }}</option>
+            {% endfor %}
+        </select>
+        </div>
+        <div class="col">
+                <select class="form-select" aria-label="Default select example"  name="producttypesize">
+
+            {% for product_type in product_types %}
+          <option value="{{ product_type.size }}"{% if selected_producttypesize==product_type.size %}selected{% endif %}>{{ product_type.size }}</option>
+            {% endfor %}
+        </select>
+        </div>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">
         Filter
     </button>
     </form>

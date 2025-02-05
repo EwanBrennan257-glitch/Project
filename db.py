@@ -142,3 +142,36 @@ def delete_product_by_name(name):
     except Exception as e:
         print(e)
         return False
+
+def filter_products(name=None, material=None, size=None):
+    try:
+        mydb = get_db()
+        sqlstatement = """SELECT p.id, p.name, p.description, p.stock, p.price, p.imageurl, p.created_by, p.product_type, p.created_at
+                    FROM Product as p INNER JOIN ProductType as pt ON p.product_type=pt.id WHERE """
+        filtering=""
+        params=[]
+        if name:
+            filtering = "pt.name=?"
+            params.append(name)
+        if material:
+            filtering += " AND pt.material=?"
+            params.append(material)
+        if size:
+            filtering += " AND pt.size=?"
+            params.append(size)
+        #handle if not all 3 filters are given
+        sqlstatement = sqlstatement + filtering
+        filterparams= tuple(params)
+        rows = mydb.execute(sqlstatement,filterparams).fetchall()
+        products = [ProductRead(id=row[0],
+                                name=row[1],
+                                description=row[2],
+                                stock=row[3],
+                                price=row[4],
+                                imageurl=row[5],
+                                created_by=row[6],
+                                product_type=row[7],
+                                created_at=row[8]).to_dict() for row in rows]
+        return products
+    except Exception as e:
+        print(e)
