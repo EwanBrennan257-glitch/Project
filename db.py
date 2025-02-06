@@ -16,6 +16,17 @@ def initdb():
         get_db().executescript(f.read().decode("utf-8"))
     click.echo("Initializing")
 
+@click.command("create-admin")
+@click.argument("email")
+@click.argument("password")
+def create_admin_user(email, password):
+    try:
+        insert_user(firstname="admin", lastname="admin", email=email, password=password, is_admin=True, is_active=True)
+        click.echo("Admin created successfully")
+    except Exception as e:
+        click.echo("Error couldn't create admin")
+        click.echo(e)
+
 def check_user_by_email(email):
     mydb=get_db()
     row=mydb.execute("""SELECT id FROM User WHERE email=?""", (email,)).fetchone()

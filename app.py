@@ -1,4 +1,4 @@
-from db import initdb
+from db import initdb, create_admin_user
 from flask import (Flask, render_template, request, redirect, url_for,
 flash, session,g)
 import datetime
@@ -11,6 +11,7 @@ from db import select_products, select_product_by_name, update_product, delete_p
 
 app = Flask(__name__)
 app.cli.add_command(initdb)
+app.cli.add_command(create_admin_user)
 app.secret_key = "mysecretkey"
 
 
