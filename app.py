@@ -142,6 +142,7 @@ def signup_page():
         validation=UserValidation()
         user,message=UserService(validation).create_user(firstname, lastname, email, password)
         if user:
+            flash(message,'success')
             return redirect(url_for('signin_page'))
         else:
             flash(message,'danger')
