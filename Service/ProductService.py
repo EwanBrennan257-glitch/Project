@@ -1,12 +1,5 @@
-from DAO.ProductDao import ProductDAO# import product DAO so it can interact with the product data
 from db import create_product, create_producttype, select_product_by_name
 class ProductService:
-    def __init__(self):#intialises productservice and creates an instance of productdao
-        self.productDAO = ProductDAO()
-
-    def get_products(self):# takes products from the DAO
-        return self.productDAO.getAllProducts()
-
 
     def get_product(self, name):#takes a single product taken by its name
         return select_product_by_name(name)

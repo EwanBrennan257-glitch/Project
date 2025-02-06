@@ -16,6 +16,13 @@ def initdb():
         get_db().executescript(f.read().decode("utf-8"))
     click.echo("Initializing")
 
+def check_user_by_email(email):
+    mydb=get_db()
+    row=mydb.execute("""SELECT id FROM User WHERE email=?""", (email,)).fetchone()
+    if row:
+        return True
+    return False
+
 def insert_user(firstname, lastname, email, password, is_admin, is_active):
     mydb=get_db()
     mydb.execute("""INSERT INTO User(firstname, lastname, email, password, is_admin, is_active) VALUES (?,?,?,?,?,?)""",

@@ -1,4 +1,5 @@
 import re
+from db import check_user_by_email
 class PasswordLengthError(Exception):#custom exception for invalid password length
     pass
 
@@ -8,15 +9,14 @@ class UserValidation:#validates user input email and password
     def __init__(self):#intialises the user validation object
         pass
 
-    def checkEmail(self, userList, email):
+    def checkEmail(self, email):
         if "@" not in email or "." not in email:#checks to see if the required speacial characters are in the email
             print("Email doesn't have the key characters '@' and '.'")#displays this message if the required characters are not present
             return False
 
-        for user in userList:
-            if user.email == email:#checks to see if the email is already in use by another user
-                print("Email already has an account")
-                return False
+        is_user_exist = check_user_by_email(email)
+        if is_user_exist:
+            return False
 
         return True
 
