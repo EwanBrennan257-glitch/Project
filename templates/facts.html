@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{%  block content %}
+    <div class="container">
+
+
+    <div class="alert alert-primary" role="alert">
+<p>
+    This page fetches facts from <strong>https://catfact.ninja/fact</strong>
+</p>
+</div>
+    <form action="/get_fact" method="post">
+        <button type="submit" class="btn btn-success">GET A CAT FACT</button>
+    </form>
+    {% if cat_fact %}
+    <h2>Random Cat Facts</h2>
+    <p>{{ cat_fact }}</p>
+    {% endif %}
+    </div>
+{% endblock %}

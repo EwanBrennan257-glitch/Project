@@ -2,7 +2,7 @@ from db import initdb
 from flask import (Flask, render_template, request, redirect, url_for,
 flash, session,g)
 import datetime
-
+import requests
 
 from Service.ProductService import ProductService
 from Service.UserService import UserService
@@ -279,6 +279,21 @@ def dashboard():
         return render_template('dashboard.html')
     flash("You are unauthorised","danger")
     return redirect(url_for('signin_page'))
+
+
+@app.route('/get_fact', methods = ['GET', 'POST'])
+def api():
+    api_url = "https://catfact.ninja/fact"
+    try:
+        response = requests.get(api_url)
+
+        if response.status_code == 200:
+            fact = response.json().get('fact','No fact found.')
+        else:
+            fact = ("Failed to retrieve a cat fact. Try again.")
+    except Exception as e:
+        fact = f"an error occured: {e}"
+    return render_template('facts.html', cat_fact=fact)
 
 if __name__ == '__main__':
     app.run(debug=True)
